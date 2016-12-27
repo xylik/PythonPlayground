@@ -12,7 +12,7 @@ def server_init():
     assert_true(resp.status_code, 200)
 
 @test
-def empty_todo_list():
+def empty_list():
     resp = requests.get(API + '/tasks')
     assert_true(resp.status_code, 200)
     assert_true(resp.json(), {'tasks':[]} )
@@ -33,11 +33,31 @@ def create_new_task():
     assert_true(created_task['done'], 'false')
     assert_true(created_task['id'] == 0)
 
+@test
+def update_task():
+    create_task = {
+        'title':'Python',
+        'description':'Finish todo api',
+        'done': False
+    }
+    create_resp = requests.post(API + '/tasks', json=create_task)
+    task_id = create_resp.json()['task']['id']
+
+    create_task['title'] = 'Java'
+    create_task['description'] = 'Learn spark java'
+    create_task['done'] = True
+    update_resp = requests.put(API + '/tasks/' + str(task_id), json=create_task)
+    updated_task = update_resp.json()['task']
+    assert_true(updated_task['id'] == task_id)
+    assert_true(updated_task['title'] == 'Java')
+    assert_true(updated_task['description'] == 'Learn spark java')
+    assert_true(updated_task['done'] == True)
+
 def print_test_statistics():
     print
-    passed_cnt = len([k for k in passed_tests.keys() if passed_tests[k]])
+    passed_cnt = len([k for k in test_results.keys() if test_results[k]])
     print str(passed_cnt) + ' test' +  ('s' if passed_cnt == 0 or passed_cnt > 1 else '') + ' passed'
-    failed_cnt = len(failed_tests)
+    failed_cnt = len(test_results) - passed_cnt
     print str(failed_cnt) + ' test' +  ('s' if failed_cnt == 0 or failed_cnt > 1 else '') + ' failed'
 
 def start_tests():
@@ -46,6 +66,7 @@ def start_tests():
     server_init()
     empty_todo_list()
     create_new_task()
+    update_task()
 
     print_test_statistics()
 
