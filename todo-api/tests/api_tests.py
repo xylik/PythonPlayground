@@ -4,7 +4,7 @@ from test_utils import *
 API = 'http://localhost:5000/todo/api/v1.0'
 
 def start_server():
-    App.start_server()
+    app.start_server()
 
 @test
 def server_init():
@@ -54,17 +54,17 @@ def update_task():
     assert_true(updated_task['done'] == True)
 
 def print_test_statistics():
-    print
+    print()
     passed_cnt = len([k for k in test_results.keys() if test_results[k]])
-    print str(passed_cnt) + ' test' +  ('s' if passed_cnt == 0 or passed_cnt > 1 else '') + ' passed'
+    print(str(passed_cnt) + ' test' +  ('s' if passed_cnt == 0 or passed_cnt > 1 else '') + ' passed')
     failed_cnt = len(test_results) - passed_cnt
-    print str(failed_cnt) + ' test' +  ('s' if failed_cnt == 0 or failed_cnt > 1 else '') + ' failed'
+    print(str(failed_cnt) + ' test' +  ('s' if failed_cnt == 0 or failed_cnt > 1 else '') + ' failed')
 
 def start_tests():
-    # start_server()
-    print '*** Tests started ***\n'
+    # start_server() # won't work in this way because start_server() is blocking
+    print('*** Tests started ***\n')
     server_init()
-    empty_todo_list()
+    empty_list()
     create_new_task()
     update_task()
 

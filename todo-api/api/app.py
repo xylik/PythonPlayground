@@ -62,9 +62,9 @@ def update_task(task_id):
         abort(400)
 
     modified_task = request.json
-    if 'title' in modified_task and type(modified_task['title']) != unicode:
+    if 'title' in modified_task and type(modified_task['title']) != str:
         abort(400)
-    if 'description' in modified_task and type(modified_task['description']) != unicode:
+    if 'description' in modified_task and type(modified_task['description']) != str:
         abort(400)
     if 'done' in modified_task and type(modified_task['done']) != bool:
         abort(400)
